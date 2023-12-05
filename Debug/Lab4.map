@@ -3096,19 +3096,20 @@ LOAD d:/set stm32/stm32cubeide_1.7.0/stm32cubeide/plugins/com.st.stm32cube.ide.m
                                       0x7fcb4 (size before relaxing)
  .debug_str     0x000000000007f8d9       0x52 ./Core/Src/led.o
                                       0x7fc4c (size before relaxing)
- .debug_str     0x000000000007f92b      0x1d9 ./Core/Src/main.o
+ .debug_str     0x000000000007f92b      0x1fd ./Core/Src/main.o
                                       0x7fdc0 (size before relaxing)
- .debug_str     0x000000000007fb04       0xc9 ./Core/Src/scheduler.o
+ .debug_str     0x000000000007fb28       0xc9 ./Core/Src/scheduler.o
                                       0x7fcce (size before relaxing)
- .debug_str     0x000000000007fbcd       0x5a ./Core/Src/stm32f1xx_hal_msp.o
+ .debug_str     0x000000000007fbf1       0x5a ./Core/Src/stm32f1xx_hal_msp.o
                                       0x7fc6f (size before relaxing)
- .debug_str     0x000000000007fc27       0xcd ./Core/Src/stm32f1xx_it.o
+ .debug_str     0x000000000007fc4b       0xcd ./Core/Src/stm32f1xx_it.o
                                       0x7fc9c (size before relaxing)
- .debug_str     0x000000000007fcf4       0x52 ./Core/Src/system_stm32f1xx.o
+ .debug_str     0x000000000007fd18       0x52 ./Core/Src/system_stm32f1xx.o
                                       0x7f6cb (size before relaxing)
- .debug_str     0x000000000007fd46      0x321 ./Core/Src/tim.o
+ .debug_str     0x000000000007fd6a      0x321 ./Core/Src/tim.o
                                       0x7ffe4 (size before relaxing)
- .debug_str     0x0000000000080067       0x5a ./Core/Startup/startup_stm32f103c6ux.o
+ .debug_str     0x000000000008008b       0x36 ./Core/Startup/startup_stm32f103c6ux.o
+                                         0x5a (size before relaxing)
  .debug_str     0x00000000000800c1      0x304 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o
                                       0x7fd22 (size before relaxing)
  .debug_str     0x00000000000803c5      0x300 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.o

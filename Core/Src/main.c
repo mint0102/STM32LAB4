@@ -97,11 +97,11 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   	// Add tasks
-  	SCH_Add_Task(blinkYellow, 0, 50);
-  	SCH_Add_Task(blinkGreen, 10, 50);
-  	SCH_Add_Task(blinkRed, 10, 100);
-  	SCH_Add_Task(blinkAqua, 20, 50);
-  	SCH_Add_Task(blinkPink, 50, 50);
+  	SCH_Add_Task(blinkYellow, 10, 50);
+  	SCH_Add_Task(blinkGreen, 0, 100);
+  	SCH_Add_Task(blinkRed, 0, 150);
+  	SCH_Add_Task(blinkAqua, 10, 200);
+  	SCH_Add_Task(blinkPink, 0, 250);
   	while (1) {
   		SCH_Dispatch_Tasks();
     /* USER CODE END WHILE */

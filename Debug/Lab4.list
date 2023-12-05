@@ -199,75 +199,75 @@ void MX_GPIO_Init(void)
  800021c:	40010800 	.word	0x40010800
 
 08000220 <main>:
-
-/* USER CODE END 0 */
-
 /**
   * @brief  The application entry point.
   * @retval int
+  */
+int main(void)
+{
  8000220:	b580      	push	{r7, lr}
  8000222:	af00      	add	r7, sp, #0
-{
-  /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
- 8000224:	f000 fb88 	bl	8000938 <HAL_Init>
+
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-
+ 8000224:	f000 fb88 	bl	8000938 <HAL_Init>
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
- 8000228:	f000 f832 	bl	8000290 <SystemClock_Config>
+
   /* Configure the system clock */
   SystemClock_Config();
-
+ 8000228:	f000 f832 	bl	8000290 <SystemClock_Config>
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
- 800022c:	f7ff ff8e 	bl	800014c <MX_GPIO_Init>
 
- 8000230:	f000 faec 	bl	800080c <MX_TIM2_Init>
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
- 8000234:	4810      	ldr	r0, [pc, #64]	; (8000278 <main+0x58>)
- 8000236:	f001 fac7 	bl	80017c8 <HAL_TIM_Base_Start_IT>
-  MX_ADC1_Init();
- 800023a:	f000 f873 	bl	8000324 <SCH_Init>
+ 800022c:	f7ff ff8e 	bl	800014c <MX_GPIO_Init>
   MX_TIM2_Init();
+ 8000230:	f000 faec 	bl	800080c <MX_TIM2_Init>
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
-  HAL_UART_Receive_IT(&huart2, &temp_start, 1);
-
+ 8000234:	4810      	ldr	r0, [pc, #64]	; (8000278 <main+0x58>)
+ 8000236:	f001 fac7 	bl	80017c8 <HAL_TIM_Base_Start_IT>
+  SCH_Init();
+ 800023a:	f000 f873 	bl	8000324 <SCH_Init>
   /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  	// Add tasks
+  	SCH_Add_Task(blinkYellow, 10, 50);
  800023e:	2232      	movs	r2, #50	; 0x32
- 8000240:	2100      	movs	r1, #0
+ 8000240:	210a      	movs	r1, #10
  8000242:	480e      	ldr	r0, [pc, #56]	; (800027c <main+0x5c>)
  8000244:	f000 f8ac 	bl	80003a0 <SCH_Add_Task>
-
- 8000248:	2232      	movs	r2, #50	; 0x32
- 800024a:	210a      	movs	r1, #10
+  	SCH_Add_Task(blinkGreen, 0, 100);
+ 8000248:	2264      	movs	r2, #100	; 0x64
+ 800024a:	2100      	movs	r1, #0
  800024c:	480c      	ldr	r0, [pc, #48]	; (8000280 <main+0x60>)
  800024e:	f000 f8a7 	bl	80003a0 <SCH_Add_Task>
-  /* Infinite loop */
- 8000252:	2264      	movs	r2, #100	; 0x64
- 8000254:	210a      	movs	r1, #10
+  	SCH_Add_Task(blinkRed, 0, 150);
+ 8000252:	2296      	movs	r2, #150	; 0x96
+ 8000254:	2100      	movs	r1, #0
  8000256:	480b      	ldr	r0, [pc, #44]	; (8000284 <main+0x64>)
  8000258:	f000 f8a2 	bl	80003a0 <SCH_Add_Task>
-  /* USER CODE BEGIN WHILE */
- 800025c:	2232      	movs	r2, #50	; 0x32
- 800025e:	2114      	movs	r1, #20
+  	SCH_Add_Task(blinkAqua, 10, 200);
+ 800025c:	22c8      	movs	r2, #200	; 0xc8
+ 800025e:	210a      	movs	r1, #10
  8000260:	4809      	ldr	r0, [pc, #36]	; (8000288 <main+0x68>)
  8000262:	f000 f89d 	bl	80003a0 <SCH_Add_Task>
-
- 8000266:	2232      	movs	r2, #50	; 0x32
- 8000268:	2132      	movs	r1, #50	; 0x32
+  	SCH_Add_Task(blinkPink, 0, 250);
+ 8000266:	22fa      	movs	r2, #250	; 0xfa
+ 8000268:	2100      	movs	r1, #0
  800026a:	4808      	ldr	r0, [pc, #32]	; (800028c <main+0x6c>)
  800026c:	f000 f898 	bl	80003a0 <SCH_Add_Task>
-  setTimer0(50);
-  setTimer1(10);
+  	while (1) {
+  		SCH_Dispatch_Tasks();
  8000270:	f000 f990 	bl	8000594 <SCH_Dispatch_Tasks>
  8000274:	e7fc      	b.n	8000270 <main+0x50>
  8000276:	bf00      	nop
@@ -279,22 +279,22 @@ void MX_GPIO_Init(void)
  800028c:	08000209 	.word	0x08000209
 
 08000290 <SystemClock_Config>:
-	  }
-	  if(buffer_flag == 1){
-		  command_parser_fsm();
-		  buffer_flag = 0;
-	  }
-	  uart_communiation_fsm();
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
  8000290:	b580      	push	{r7, lr}
  8000292:	b090      	sub	sp, #64	; 0x40
  8000294:	af00      	add	r7, sp, #0
-    /* USER CODE END WHILE */
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
  8000296:	f107 0318 	add.w	r3, r7, #24
  800029a:	2228      	movs	r2, #40	; 0x28
  800029c:	2100      	movs	r1, #0
  800029e:	4618      	mov	r0, r3
  80002a0:	f001 fe4e 	bl	8001f40 <memset>
-
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
  80002a4:	1d3b      	adds	r3, r7, #4
  80002a6:	2200      	movs	r2, #0
  80002a8:	601a      	str	r2, [r3, #0]
@@ -302,53 +302,53 @@ void MX_GPIO_Init(void)
  80002ac:	609a      	str	r2, [r3, #8]
  80002ae:	60da      	str	r2, [r3, #12]
  80002b0:	611a      	str	r2, [r3, #16]
-    /* USER CODE BEGIN 3 */
-  }
-  /* USER CODE END 3 */
-}
 
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
  80002b2:	2302      	movs	r3, #2
  80002b4:	61bb      	str	r3, [r7, #24]
-/**
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
  80002b6:	2301      	movs	r3, #1
  80002b8:	62bb      	str	r3, [r7, #40]	; 0x28
-  * @brief System Clock Configuration
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
  80002ba:	2310      	movs	r3, #16
  80002bc:	62fb      	str	r3, [r7, #44]	; 0x2c
-  * @retval None
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
  80002be:	2300      	movs	r3, #0
  80002c0:	637b      	str	r3, [r7, #52]	; 0x34
-  */
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
  80002c2:	f107 0318 	add.w	r3, r7, #24
  80002c6:	4618      	mov	r0, r3
  80002c8:	f000 fe52 	bl	8000f70 <HAL_RCC_OscConfig>
  80002cc:	4603      	mov	r3, r0
  80002ce:	2b00      	cmp	r3, #0
  80002d0:	d001      	beq.n	80002d6 <SystemClock_Config+0x46>
-void SystemClock_Config(void)
-{
+  {
+    Error_Handler();
  80002d2:	f000 f822 	bl	800031a <Error_Handler>
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
-
+  }
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
  80002d6:	230f      	movs	r3, #15
  80002d8:	607b      	str	r3, [r7, #4]
-  /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
  80002da:	2300      	movs	r3, #0
  80002dc:	60bb      	str	r3, [r7, #8]
-  */
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
  80002de:	2300      	movs	r3, #0
  80002e0:	60fb      	str	r3, [r7, #12]
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
  80002e2:	2300      	movs	r3, #0
  80002e4:	613b      	str	r3, [r7, #16]
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
  80002e6:	2300      	movs	r3, #0
  80002e8:	617b      	str	r3, [r7, #20]
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
  80002ea:	1d3b      	adds	r3, r7, #4
  80002ec:	2100      	movs	r1, #0
  80002ee:	4618      	mov	r0, r3
@@ -356,39 +356,39 @@ void SystemClock_Config(void)
  80002f4:	4603      	mov	r3, r0
  80002f6:	2b00      	cmp	r3, #0
  80002f8:	d001      	beq.n	80002fe <SystemClock_Config+0x6e>
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
- 80002fa:	f000 f80e 	bl	800031a <Error_Handler>
     Error_Handler();
+ 80002fa:	f000 f80e 	bl	800031a <Error_Handler>
   }
+}
  80002fe:	bf00      	nop
  8000300:	3740      	adds	r7, #64	; 0x40
  8000302:	46bd      	mov	sp, r7
  8000304:	bd80      	pop	{r7, pc}
 
 08000306 <HAL_TIM_PeriodElapsedCallback>:
-  /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+
+/* USER CODE BEGIN 4 */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
  8000306:	b580      	push	{r7, lr}
  8000308:	b082      	sub	sp, #8
  800030a:	af00      	add	r7, sp, #0
  800030c:	6078      	str	r0, [r7, #4]
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+	SCH_Update();
  800030e:	f000 f823 	bl	8000358 <SCH_Update>
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+}
  8000312:	bf00      	nop
  8000314:	3708      	adds	r7, #8
  8000316:	46bd      	mov	sp, r7
  8000318:	bd80      	pop	{r7, pc}
 
 0800031a <Error_Handler>:
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
-  {
-    Error_Handler();
-  }
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
  800031a:	b480      	push	{r7}
  800031c:	af00      	add	r7, sp, #0
   \details Disables IRQ interrupts by setting the I-bit in the CPSR.
@@ -400,10 +400,10 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  800031e:	b672      	cpsid	i
 }
  8000320:	bf00      	nop
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
-  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV2;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1)
  8000322:	e7fe      	b.n	8000322 <Error_Handler+0x8>
 
 08000324 <SCH_Init>:
