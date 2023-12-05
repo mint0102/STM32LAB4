@@ -19,16 +19,13 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "adc.h"
 #include "tim.h"
-#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "software_timer.h"
-#include "uart.h"
-#include "string.h"
+#include "scheduler.h"
+#include "led.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -90,33 +87,23 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_ADC1_Init();
-  MX_USART2_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
-  HAL_UART_Receive_IT(&huart2, &temp_start, 1);
+  SCH_Init();
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
-  setTimer0(50);
-  setTimer1(10);
-//  uint8_t adc = 0;
-//  uint8_t str[100];
-  while (1)
-  {
-	  if(timer0_flag){
-		  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-		  setTimer0(50);
-	  }
-	  if(buffer_flag == 1){
-		  command_parser_fsm();
-		  buffer_flag = 0;
-	  }
-	  uart_communiation_fsm();
+  	// Add tasks
+  	SCH_Add_Task(blinkYellow, 0, 50);
+  	SCH_Add_Task(blinkGreen, 10, 50);
+  	SCH_Add_Task(blinkRed, 10, 100);
+  	SCH_Add_Task(blinkAqua, 20, 50);
+  	SCH_Add_Task(blinkPink, 50, 50);
+  	while (1) {
+  		SCH_Dispatch_Tasks();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -132,7 +119,6 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -158,17 +144,11 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
-  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV2;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
-    Error_Handler();
-  }
 }
 
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	timerRun();
+	SCH_Update();
 }
 /* USER CODE END 4 */
 

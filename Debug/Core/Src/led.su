@@ -1,0 +1,5 @@
+led.c:11:6:blinkYellow	8	static
+led.c:15:6:blinkGreen	8	static
+led.c:19:6:blinkRed	8	static
+led.c:23:6:blinkAqua	8	static
+led.c:27:6:blinkPink	8	static
